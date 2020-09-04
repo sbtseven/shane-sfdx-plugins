@@ -43,12 +43,13 @@ export default class CommunityPublish extends SfdxCommand {
         this.ux.startSpinner(`Publishing communities via rest api [${filteredCommunities.map(c => c.name)}]...`);
 
         const publishResults = await Promise.all(
-            filteredCommunities.map(c =>
-                conn.request({
-                    method: 'POST',
-                    url: `${conn.baseUrl()}/connect/communities/${c.id}/publish`,
-                    body: '{}'
-                })
+            filteredCommunities.map(
+                async c =>
+                    await conn.request({
+                        method: 'POST',
+                        url: `${conn.baseUrl()}/connect/communities/${c.id}/publish`,
+                        body: '{}'
+                    })
             )
         );
 
